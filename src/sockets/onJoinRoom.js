@@ -14,9 +14,6 @@ export const onJoinRoom = (Socket, Rooms) => {
             id: Socket.client.id
           });
           Socket.client.join(data.roomId);
-          Socket.client.emit(EVENTS.EMIT.JOIN_ROOM_RESPONSE, {
-            error: 'Toks vardas jau yra'
-          });
           Socket.socket.to(data.roomId).emit(EVENTS.EMIT.GAME_STATUS_UPDATE, { ...room });
         } else
           Socket.client.emit(EVENTS.EMIT.JOIN_ROOM_RESPONSE, {
