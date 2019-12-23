@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node --exec babel-node index.js",
+    "start": "node index.js",
+    "start-dev": "nodemon --exec babel-node index.js",
     "heroku-postbuild": "cd client && yarn && yarn build"
   },
   "name": "klausimynas-be",
