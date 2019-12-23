@@ -10,6 +10,9 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   error => console.log('CONNECTING TO DATABASE ERROR:', error)
 );
+const app = new express();
+
+const server = app.listen(4000);
 
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
@@ -20,9 +23,6 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const app = new express();
-
-const server = app.listen(4000);
 
 const socket = socketIo(server);
 
