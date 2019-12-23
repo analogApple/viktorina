@@ -20,7 +20,7 @@ const SelectQue = () => {
   useEffect(() => {
     socket.emit(WEBSOCKETS.EVENTS.EMIT.GET_QUE_LIST);
     socket.on(WEBSOCKETS.EVENTS.LISTEN.GET_QUE_LIST_RESPONSE, data => {
-      console.log(data)
+      console.log(data);
       setQuestioners(data);
       setFilteredQ(data);
     });
