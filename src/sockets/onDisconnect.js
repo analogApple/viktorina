@@ -1,4 +1,4 @@
-import { EVENTS } from '../api/static';
+import { EVENTS } from './static';
 
 export const onDisconnect = (Socket, Rooms) => {
   Socket.client.on(EVENTS.LISTEN.DISCONNECT, () => {

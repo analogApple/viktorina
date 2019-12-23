@@ -1,10 +1,9 @@
 import Questioners from '../models/Que';
-import { EVENTS, GAME_STATUS } from '../api/static';
+import { EVENTS, GAME_STATUS } from './static';
 
 export const onCreateRoom = (Socket, Rooms) => {
   Socket.client.on(EVENTS.LISTEN.CREATE_ROOM, data => {
     const room = createRoom(Socket.client.id);
-    console.log(room);
     Questioners.find({ _id: data.id }, (err, que) => {
       room.questioner = que[0];
       Rooms.addRoom(room);
@@ -22,5 +21,4 @@ const createRoom = clientId => ({
   status: GAME_STATUS.WAITING,
   questionNumber: 1,
   currentQuestion: null,
-  playersAnswered: []
 });

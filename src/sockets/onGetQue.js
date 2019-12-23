@@ -1,9 +1,8 @@
-import { EVENTS } from '../api/static';
+import { EVENTS } from './static';
 import Questioners from '../models/Que';
 
 export const onGetQue = Socket => {
   Socket.client.on(EVENTS.LISTEN.GET_QUE_LIST, () => {
-    console.log(`WEBSOCKET_EVENT: ${EVENTS.LISTEN.GET_QUE_LIST}`);
     Questioners.find((err, res) => {
       if (err) return console.log(err);
       const names = res.map(q => ({

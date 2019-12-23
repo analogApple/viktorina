@@ -20,9 +20,11 @@ export const RoomProvider = ({ children }) => {
 
   useEffect(() => {
     socket.on(WEBSOCKETS.EVENTS.LISTEN.CREATE_ROOM_RESPONSE, data => {
-      setRoom(data.newRoom, 'CREATE_ROOM_RESPONSE');
+      console.log(data);
+      setRoom(data.newRoom);
     });
     socket.on(WEBSOCKETS.EVENTS.LISTEN.GAME_STATUS_UPDATE, data => {
+      console.log(data);
       setRoom(data);
       setShowCorrect(false);
     });

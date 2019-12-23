@@ -1,4 +1,4 @@
-import { EVENTS } from '../api/static';
+import { EVENTS } from './static';
 
 export const onSubmitAnswer = (Socket, Rooms) => {
   Socket.client.on(EVENTS.LISTEN.SUBMIT_ANSWER, data => {
@@ -6,7 +6,9 @@ export const onSubmitAnswer = (Socket, Rooms) => {
       return room.id === data.roomId;
     })[0];
     if (room) {
-      const player = room.players.filter(player => player.id === Socket.client.id);
+      const player = room.players.filter(
+        player => player.id === Socket.client.id
+      );
       if (player) {
         if (room.currentQuestion.options[data.optionIndex].isCorrect) {
           const playersAnswered = room.playersAnswered.length;
@@ -27,7 +29,9 @@ export const onSubmitAnswer = (Socket, Rooms) => {
             }
           });
           room.players = players;
-          Socket.client.emit(EVENTS.EMIT.SUBMIT_ANSWER_RESPONSE, { points: player.points });
+          Socket.client.emit(EVENTS.EMIT.SUBMIT_ANSWER_RESPONSE, {
+            points: player.points
+          });
           Rooms.updateRoom(room);
         }
       }

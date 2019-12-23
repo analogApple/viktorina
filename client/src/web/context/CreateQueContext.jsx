@@ -71,6 +71,7 @@ export const CreateQueProvider = ({ children }) => {
       });
     });
     if (isValid) {
+      console.log(questioner)
       socket.emit(WEBSOCKETS.EVENTS.EMIT.ADD_QUE, formatQue(questioner));
       setErrorInForm(false);
     } else {

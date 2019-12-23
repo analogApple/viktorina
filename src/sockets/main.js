@@ -1,5 +1,4 @@
-import socketIo from 'socket.io';
-import { EVENTS } from '../api/static';
+import { EVENTS } from './static';
 import { onDisconnect } from './onDisconnect';
 import { onJoinRoom } from './onJoinRoom';
 import { onCreateRoom } from './onCreateRoom';
@@ -8,7 +7,7 @@ import { onAddQue } from './onAddQue';
 import { onStartGame } from './onStartGame';
 import { onSubmitAnswer } from './onSubmitAnswer';
 
-const main = server => {
+const main = socket => {
   const Rooms = {
     rooms: [],
     getRooms: () => Rooms.rooms,
@@ -22,7 +21,6 @@ const main = server => {
       }))
   };
 
-  const socket = socketIo(server);
 
   socket.on(EVENTS.LISTEN.CONNECTION, client => {
     const Socket = {

@@ -1,16 +1,19 @@
-import mongoose from 'mongoose';
-import express from 'express';
+import Mongoose from 'mongoose';
+import Express from 'express';
+import socketIo from 'socket.io';
 import 'dotenv/config';
 import main from './src/sockets/main';
 
-mongoose.connect(
+Mongoose.connect(
   process.env.DB_CONNECTION,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  () => null
+  error => console.log('CONNECTING TO DATABASE ERROR:', error)
 );
 
-const app = new express();
+const app = new Express();
 
-const server = app.listen(4000, () => {});
+const server = app.listen(4000);
 
-main(server);
+const socket = socketIo(server);
+
+main(socket);
