@@ -12,7 +12,7 @@ mongoose.connect(
 );
 const app = new express();
 
-const server = app.listen(4000);
+const server = app.listen(process.env.PORT || 4000);
 
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
