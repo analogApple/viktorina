@@ -16,14 +16,13 @@ import StatusBar from '../components/StatusBar';
 import { PlayerContext } from '../../context/PlayerContext';
 
 const FindRoom = () => {
-  const { playerColor, setPlayerColor } = useContext(PlayerContext);
+  const { playerColor, setPlayerColor, name, setName } = useContext(PlayerContext);
   const [sessionName, setSessionName] = useState('');
-  const [name, setName] = useState('');
   const [error, setError] = useState(false);
   const history = useHistory();
 
   const findRoom = () => {
-    if (name && setPlayerColor && sessionName) {
+    if (name && playerColor && sessionName) {
       socket.emit(WEBSOCKETS.EVENTS.EMIT.JOIN_ROOM, { roomId: sessionName, name, playerColor });
       history.push(MOBILE_PATH.GAME);
       return;

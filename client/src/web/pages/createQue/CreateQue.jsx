@@ -6,19 +6,26 @@ import QueForm from './components/QueForm';
 import { CreateQueContext } from '../../context/CreateQueContext';
 
 const CreateQue = () => {
-  const { questioner, addForm, errorInForm, editName } = useContext(CreateQueContext);
+  const { questioner, addForm, errorInForm, editName, createQue } = useContext(CreateQueContext);
   const [isEmpty, setIsEmpty] = useState(false);
+  const history = useHistory();
+
   const handleChange = event => {
     setIsEmpty(event.target.value === '');
     editName(event.target.value);
   };
-  const history = useHistory();
+
+  const handleSubmit = () => {
+    if (questioner.forms.length > 0) {
+      createQue(history.goBack);
+    }
+  };
 
   return useMemo(() => {
     return (
-      <Background>
+      <BaseScreen>
         <Container>
-          <Title>Sukurkyte klausimyną!</Title>
+          <Title>Sukurkite klausimyną!</Title>
           <EnterNameLabel>Įveskite pavadinimą:</EnterNameLabel>
           <NameInput
             isEmpty={isEmpty}
@@ -32,53 +39,42 @@ const CreateQue = () => {
             <QueForm key={index} index={index} form={form} />
           ))}
           {errorInForm && <Label>Ne visi laukai užpildyti</Label>}
-          <CreateQ onClick={addForm}>Pridėti klausimą</CreateQ>
-          <SubmitQue />
-          <GoBack color={'#c9c9c9'} onClick={() => history.goBack()}>
+          <BaseButton onClick={addForm}>Pridėti klausimą</BaseButton>
+          <BaseButton color={'#50c769'} onClick={handleSubmit}>
+            Kurti klausimyną
+          </BaseButton>
+          <BaseButton color={'#c9c9c9'} onClick={() => history.goBack()}>
             Grįžti
-          </GoBack>
+          </BaseButton>
         </Container>
-      </Background>
+      </BaseScreen>
     );
   }, [questioner.forms, errorInForm, isEmpty]);
 };
 
-const Background = styled(BaseScreen)``;
-const CreateQ = styled(BaseButton)``;
-const GoBack = styled(BaseButton)``;
 const Label = styled(BaseText)`
+  width: 100%;
   margin: auto;
   text-align: center;
   color: red;
 `;
 const Title = styled(BaseText)`
-  font-size: 24px;
   font-weight: 600;
 `;
 const EnterNameLabel = styled(BaseText)`
-  font-size: 20px;
   font-weight: 400;
 `;
 
 const NameInput = styled(BaseInput)`
   width: 100%;
+  height: 2vh;
 `;
 
 const Container = styled.div`
   margin: 8px;
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: 50vw;
 `;
 
 export default CreateQue;
-
-const SubmitQue = () => {
-  const { questioner, createQue } = useContext(CreateQueContext);
-  return (
-    <Submit color={'#50c769'} onClick={() => (questioner.forms.length > 0 ? createQue() : null)}>
-      Kurti klausimyną
-    </Submit>
-  );
-};
-const Submit = styled(BaseButton)``;

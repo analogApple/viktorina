@@ -1,6 +1,4 @@
 import React, { createContext, useState } from 'react';
-import { socket, WEBSOCKETS } from '../../api/socket';
-import { MOBILE_PATH } from '../route/MobileRoute';
 
 const initialPlayerValues = {};
 
@@ -8,9 +6,10 @@ export const PlayerContext = createContext(initialPlayerValues);
 
 export const PlayerProvider = ({ children }) => {
   const [playerColor, setPlayerColor] = useState(null);
+  const [name, setName] = useState('');
 
   return (
-    <PlayerContext.Provider value={{ playerColor, setPlayerColor }}>
+    <PlayerContext.Provider value={{ playerColor, setPlayerColor, name, setName }}>
       {children}
     </PlayerContext.Provider>
   );

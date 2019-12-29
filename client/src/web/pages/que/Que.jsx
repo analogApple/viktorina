@@ -1,13 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { BaseScreen, BaseText, BaseButton } from '../../../styles/BaseComponents';
-import { RoomContext, GAME_STATUS } from '../../context/RoomContext';
 import { socket, WEBSOCKETS } from '../../../api/socket';
-import useTimer from '../../../utils/hooks/useTimer';
+import useTimer from '../../../common/hooks/useTimer';
+import { RoomContext, GAME_STATUS } from '../../../common/context/RoomContext';
+import { WEB_PATH } from '../../route/WebRoute';
 
 const Que = () => {
   const { room, showCorrect } = useContext(RoomContext);
   const [showGameStartTimer, setShowGameStartTimer] = useState(false);
+  const [showQuestionTimer, setShowQuestionTimer] = useState(false);
+
+  const history = useHistory();
 
   const startGame = () => {
     socket.emit(WEBSOCKETS.EVENTS.EMIT.START_GAME, { roomId: room.id });
@@ -19,13 +24,28 @@ const Que = () => {
       ? room.players.sort((a, b) => (a.points > b.points ? 1 : -1))
       : [];
 
+  const refresh = () => {
+    history.replace(WEB_PATH.SELECT_QUE);
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    if (!showCorrect) {
+      setShowQuestionTimer(true);
+    } else {
+      setShowQuestionTimer(false);
+    }
+  }, [showCorrect]);
+
   const ReturnComponents = () => {
     switch (room.status) {
       case GAME_STATUS.WAITING:
         return (
           <>
             <Title>Kambarys: {room.id}</Title>
-            {!showGameStartTimer && <Button onClick={startGame}>Spauskite kad pradėti</Button>}
+            {!showGameStartTimer && (
+              <BaseButton onClick={startGame}>Spauskite kad pradėti</BaseButton>
+            )}
             {room.players.map(player => (
               <NameLabel color={player.color} key={player.name}>
                 {player.name}
@@ -37,24 +57,26 @@ const Que = () => {
       case GAME_STATUS.IN_GAME:
         return (
           <>
-            <Title>{room.questionNumber}. klausimas</Title>
+            <Title>{room.questionIndex + 1}. klausimas</Title>
             <Title>{room.currentQuestion.question}</Title>
             {room.currentQuestion.options.map((option, index) => (
               <ListItem key={index} isCorrect={option.isCorrect} showCorrect={showCorrect}>
                 {index + 1}. {option.answer}
               </ListItem>
             ))}
+            {showQuestionTimer && <QuestionTimer />}
           </>
         );
       case GAME_STATUS.FINISHED:
         return (
           <>
-            <Title>SURINKTI TASKAI:</Title>
+            <Title>SURINKTI TAŠKAI:</Title>
             {sortedPlayers.map(player => (
               <NameLabel color={player.color} key={player.id}>
                 {player.name}: {player.points}
               </NameLabel>
             ))}
+            <BaseButton onClick={refresh}>Kartoti!</BaseButton>
           </>
         );
       default:
@@ -71,15 +93,17 @@ const Que = () => {
 
 const Background = styled(BaseScreen)``;
 const Title = styled(BaseText)`
-  font-size: 24px;
   font-weight: 600;
 `;
 const NameLabel = styled(BaseText)`
-  font-size: 16px;
   color: ${({ color }) => color};
 `;
 const ListItem = styled.div`
-  width: 300px;
+  width: 30vw;
+  height: 8vh;
+  font-size: 5vh;
+  align-items: center;
+
   border-bottom: 1px solid black;
   border-left: 1px solid black;
   ${props => {
@@ -92,10 +116,9 @@ const ListItem = styled.div`
     }
   }}
   border-radius: 50px;
-  padding: 8px;
+  padding: 1vh;
   margin: 16px;
 `;
-const Button = styled(BaseButton)``;
 
 export default Que;
 
@@ -104,7 +127,13 @@ const GameStartTimer = () => {
 
   return gameStartTime >= 0 ? <TimerLabel>{gameStartTime}</TimerLabel> : <></>;
 };
+const QuestionTimer = () => {
+  const questionTimer = useTimer(60);
+
+  return questionTimer >= 0 ? <TimerLabel>{questionTimer}</TimerLabel> : <></>;
+};
+
 const TimerLabel = styled(BaseText)`
-  font-size: 24px;
   font-weight: 600;
+  font-size: 10vh;
 `;

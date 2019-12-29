@@ -1,7 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { WEB_PATH } from '../route/WebRoute';
 import { WEBSOCKETS, socket } from '../../api/socket';
-import { useHistory } from 'react-router-dom';
 
 export const GAME_STATUS = {
   WAITING: 'WAITING',
@@ -20,13 +18,14 @@ export const RoomProvider = ({ children }) => {
 
   useEffect(() => {
     socket.on(WEBSOCKETS.EVENTS.LISTEN.CREATE_ROOM_RESPONSE, data => {
-      console.log(data);
       setRoom(data.newRoom);
     });
     socket.on(WEBSOCKETS.EVENTS.LISTEN.GAME_STATUS_UPDATE, data => {
-      console.log(data);
       setRoom(data);
       setShowCorrect(false);
+      if (data.status === GAME_STATUS.FINISHED) {
+        socket.disconnect();
+      }
     });
     socket.on(WEBSOCKETS.EVENTS.LISTEN.SHOW_CORRECT, () => {
       setShowCorrect(true);

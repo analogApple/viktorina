@@ -35,14 +35,14 @@ export const QuestionOption = props => {
 const AnswerInput = styled(BaseInput)`
   display: flex;
   flex: 1;
+  height: 2vh;
 `;
 
 const Checkbox = styled.div`
-  height: 28px;
-  width: 100px;
   border-radius: 50px;
   border: 1px solid black;
 
+  padding: 8px;
   background-color: ${props => (props.isSelected ? `#50C769a0` : '#ffffff')};
   :hover {
     background-color: ${props => (props.isSelected ? `#50C769ba` : '#ffffff')};
@@ -59,6 +59,7 @@ const Container = styled.div`
   align-items: center;
 `;
 const Label = styled(BaseText)`
+  font-size: 2vh;
   margin: auto;
   text-align: center;
 `;

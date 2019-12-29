@@ -46,6 +46,7 @@ const QueForm = ({ index, form }) => {
 
 const Question = styled(BaseInput)`
   width: 100%;
+  height: 2vh;
 `;
 const Title = styled(BaseText)`
   font-size: 24px;

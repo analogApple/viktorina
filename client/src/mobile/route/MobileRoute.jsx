@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import FindRoom from '../pages/findRoom/FindRoom';
-import Game from '../pages/waiting/Game';
 import { PlayerProvider } from '../context/PlayerContext';
+import Game from '../pages/game/Game';
 
 export const MOBILE_PATH = {
   HOME: '/',

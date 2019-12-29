@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 import { isMobile } from 'react-device-detect';
-import { getWindowDimensions } from '../utils/hooks/useWindowDimensions';
+import { getWindowDimensions } from '../common/hooks/useWindowDimensions';
 
-export const buttonWidth = `${getWindowDimensions().width - 32}px`;
+export const buttonWidth = isMobile ? `${getWindowDimensions().width - 32}px` : '30vw';
 
 export const BaseButton = styled.button`
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  width: ${isMobile ? buttonWidth : '300px'};
-  height: 50px;
+  font-size: 4vh;
+  width: ${buttonWidth};
+  height: 8vh;
   margin: 8px;
-  border-radius: 50px;
+  border-radius: 10vh;
   border: 0px solid ${props => (props.color ? props.color + 'a0' : '#67a6d6a0')};
   padding: 0px 8px;
   background-color: ${props => (props.color ? props.color + '50' : '#67a6d650')};
@@ -27,7 +28,9 @@ export const BaseButton = styled.button`
 
 export const BaseInput = styled.input`
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  width: ${isMobile ? buttonWidth : '250px'};
+  width: ${buttonWidth};
+  height: 5vh;
+  font-size: 3vh;
   margin: 8px;
   border-radius: 20px;
   border: 1px solid ${props => (props.isEmpty ? 'red' : 'black')};
@@ -45,6 +48,7 @@ export const BaseInput = styled.input`
 `;
 
 export const BaseText = styled.p`
+  font-size: 5vh;
   margin: 8px;
   :hover {
     cursor: default;

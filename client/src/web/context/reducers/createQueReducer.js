@@ -1,5 +1,14 @@
 import { emptyForm } from '../CreateQueContext';
 
+export const createQueActions = {
+  ADD_FORM: 'ADD_FORM',
+  REMOVE_FORM: 'REMOVE_FORM',
+  EDIT_OPTION: 'EDIT_OPTION',
+  EDIT_QUESTION: 'EDIT_QUESTION',
+  EDIT_NAME: 'EDIT_NAME',
+  SET_OPT_IS_CORRECT: 'SET_OPT_IS_CORRECT'
+};
+
 export function createQueReducer(state, action) {
   const formsCopy = JSON.parse(JSON.stringify(state.forms));
 
@@ -36,19 +45,19 @@ export function createQueReducer(state, action) {
   };
 
   switch (action.type) {
-    case 'addForm':
+    case createQueActions.ADD_FORM:
       return addForm();
-    case 'removeForm':
+    case createQueActions.REMOVE_FORM:
       return removeForm({ ...action.payload });
-    case 'editOption':
+    case createQueActions.EDIT_OPTION:
       return editOption({ ...action.payload });
-    case 'editQuestion':
+    case createQueActions.EDIT_QUESTION:
       return editQuestion({ ...action.payload });
-    case 'editName':
+    case createQueActions.EDIT_NAME:
       return editName({ ...action.payload });
-    case 'setOptIsCorrect':
+    case createQueActions.SET_OPT_IS_CORRECT:
       return setOptIsCorrect({ ...action.payload });
     default:
-      throw new Error();
+      return state;
   }
 }

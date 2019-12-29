@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { BaseButton, BaseInput, BaseText, BaseScreen } from '../../../styles/BaseComponents';
 import QueListItem from './components/QueListItem';
-import searchFilter from '../../../utils/searchUtil';
+import searchFilter from '../../../common/utils/searchUtil';
 import { WEB_PATH } from '../../route/WebRoute';
 import { socket, WEBSOCKETS } from '../../../api/socket';
 

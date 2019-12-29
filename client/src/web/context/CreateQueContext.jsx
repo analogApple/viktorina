@@ -1,6 +1,9 @@
 import React, { createContext, useReducer, useState, useEffect } from 'react';
 import { socket, WEBSOCKETS } from '../../api/socket';
-import { createQueReducer } from './reducers/createQueReducer';
+import {
+  createQueReducer,
+  createQueActions
+} from './reducers/createQueReducer';
 
 export const CreateQueContext = createContext();
 
@@ -39,24 +42,35 @@ export const CreateQueProvider = ({ children }) => {
     if (errorInForm) {
       setErrorInForm(false);
     }
-  }, [questioner.forms, errorInForm]);
+  }, [questioner.forms]);
 
-  const addForm = () => dispatch({ type: 'addForm' });
+  const addForm = () => dispatch({ type: createQueActions.ADD_FORM });
 
-  const removeForm = index => dispatch({ type: 'removeForm', payload: { index } });
+  const removeForm = index =>
+    dispatch({ type: createQueActions.REMOVE_FORM, payload: { index } });
 
   const editOption = (qIndex, oIndex, value) =>
-    dispatch({ type: 'editOption', payload: { qIndex, oIndex, value } });
+    dispatch({
+      type: createQueActions.EDIT_OPTION,
+      payload: { qIndex, oIndex, value }
+    });
 
   const setOptIsCorrect = (qIndex, oIndex) =>
-    dispatch({ type: 'setOptIsCorrect', payload: { qIndex, oIndex } });
+    dispatch({
+      type: createQueActions.SET_OPT_IS_CORRECT,
+      payload: { qIndex, oIndex }
+    });
 
   const editQuestion = (qIndex, value) =>
-    dispatch({ type: 'editQuestion', payload: { qIndex, value } });
+    dispatch({
+      type: createQueActions.EDIT_QUESTION,
+      payload: { qIndex, value }
+    });
 
-  const editName = value => dispatch({ type: 'editName', payload: { value } });
+  const editName = value =>
+    dispatch({ type: createQueActions.EDIT_NAME, payload: { value } });
 
-  const createQue = () => {
+  const createQue = callBack => {
     let isValid = true;
     questioner.forms.forEach(form => {
       if (form.question.isEmpty) {
@@ -71,9 +85,9 @@ export const CreateQueProvider = ({ children }) => {
       });
     });
     if (isValid) {
-      console.log(questioner);
       socket.emit(WEBSOCKETS.EVENTS.EMIT.ADD_QUE, formatQue(questioner));
       setErrorInForm(false);
+      callBack();
     } else {
       setErrorInForm(true);
     }

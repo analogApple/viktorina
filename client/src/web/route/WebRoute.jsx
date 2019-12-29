@@ -4,7 +4,7 @@ import SelectQue from '../pages/startingPage/SelectQue';
 import CreateQue from '../pages/createQue/CreateQue';
 import Que from '../pages/que/Que';
 import { CreateQueProvider } from '../context/CreateQueContext';
-import { RoomProvider } from '../context/RoomContext';
+import { RoomProvider } from '../../common/context/RoomContext';
 
 export const WEB_PATH = {
   SELECT_QUE: '/',
