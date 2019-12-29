@@ -18,9 +18,9 @@ const main = socket => {
         if (room.id === newRoom.id) {
           return { ...newRoom };
         }
+        return room;
       }))
   };
-
 
   socket.on(EVENTS.LISTEN.CONNECTION, client => {
     const Socket = {

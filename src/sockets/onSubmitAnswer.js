@@ -2,15 +2,20 @@ import { EVENTS } from './static';
 
 export const onSubmitAnswer = (Socket, Rooms) => {
   Socket.client.on(EVENTS.LISTEN.SUBMIT_ANSWER, data => {
+
     const room = Rooms.getRooms().filter(room => {
       return room.id === data.roomId;
     })[0];
     if (room) {
       const player = room.players.filter(
         player => player.id === Socket.client.id
-      );
+      )[0];
       if (player) {
-        if (room.currentQuestion.options[data.optionIndex].isCorrect) {
+        const hadAnswered = room.playersAnswered.includes(player.id);
+        if (
+          room.currentQuestion.options[data.optionIndex].isCorrect &&
+          !hadAnswered
+        ) {
           const playersAnswered = room.playersAnswered.length;
           const getPointsToGive = () => {
             if (playersAnswered === 0) {
@@ -25,13 +30,16 @@ export const onSubmitAnswer = (Socket, Rooms) => {
           };
           const players = room.players.map(player => {
             if (player.id === Socket.client.id) {
-              return { ...player, points: getPointsToGive() };
+              return { ...player, points: player.points + getPointsToGive() };
             }
+            return player;
           });
           room.players = players;
           Socket.client.emit(EVENTS.EMIT.SUBMIT_ANSWER_RESPONSE, {
             points: player.points
           });
+
+          room.playersAnswered.push(player.id);
           Rooms.updateRoom(room);
         }
       }

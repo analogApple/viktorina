@@ -7,7 +7,9 @@ export const onCreateRoom = (Socket, Rooms) => {
     Questioners.find({ _id: data.id }, (err, que) => {
       room.questioner = que[0];
       Rooms.addRoom(room);
-      Socket.client.emit(EVENTS.EMIT.CREATE_ROOM_RESPONSE, { newRoom: { ...room } });
+      Socket.client.emit(EVENTS.EMIT.CREATE_ROOM_RESPONSE, {
+        newRoom: { ...room }
+      });
       Socket.client.join(room.id);
     });
   });
@@ -19,6 +21,7 @@ const createRoom = clientId => ({
   players: [],
   questioner: null,
   status: GAME_STATUS.WAITING,
-  questionNumber: 1,
+  questionIndex: 0,
   currentQuestion: null,
+  playersAnswered: []
 });
